@@ -15,12 +15,12 @@ class Remitly:
         # flsmo2ix is the class name which contains our required data for this project
         info_tag = scraper.get_html_data().find_all('td', attrs={'class': 'f1smo2ix'})
 
-        remitly_result = {}
+        optional = {}
         for index, data in enumerate(info_tag):
             if data.text.encode('utf-8') != "$0Fee":
                 if index == 0:
-                    remitly_result['express'] = re.findall("\d+\.\d+", data.text)
+                    optional['express'] = re.findall("\d+\.\d+", data.text.encode('utf-8'))
                 else:
-                    remitly_result['economy'] = re.findall("\d+\.\d+", data.text)
+                    optional['economy'] = re.findall("\d+\.\d+", data.text.encode('utf-8'))
 
-        return remitly_result
+        return {"amount": optional['economy'], "optional": optional}
