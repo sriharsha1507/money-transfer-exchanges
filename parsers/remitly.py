@@ -19,8 +19,8 @@ class Remitly:
         for index, data in enumerate(info_tag):
             if data.text.encode('utf-8') != "$0Fee":
                 if index == 0:
-                    optional['express'] = re.findall("\d+\.\d+", data.text.encode('utf-8'))
+                    optional['express'] = re.findall("\d+\.\d+", data.text.encode('utf-8'))[0]
                 else:
-                    optional['economy'] = re.findall("\d+\.\d+", data.text.encode('utf-8'))
+                    optional['economy'] = re.findall("\d+\.\d+", data.text.encode('utf-8'))[0]
 
         return {"amount": optional['economy'], "optional": optional}
