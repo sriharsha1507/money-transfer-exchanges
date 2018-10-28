@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Resource, Api
 
 from parsers.remitly import Remitly
@@ -14,8 +14,13 @@ class Exchange(Resource):
             return Remitly.get_amount()
         elif exchange == "xoom":
             return Xoom.get_amount()
+        elif exchange == "all":
+            return jsonify({
+                'xoom': Xoom.get_amount(),
+                'remitly': Remitly.get_amount()
+            })
         else:
-            return {"hi": "yo"}
+            return {"bad request": "Wrong endpoint"}
 
 
 api.add_resource(Exchange, '/<string:exchange>')
