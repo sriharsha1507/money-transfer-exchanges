@@ -1,6 +1,7 @@
 # import libraries
 import re
 
+from model.Exchange import Exchange
 from parsers.helper.scraper import Scraper
 
 
@@ -23,4 +24,7 @@ class Remitly:
                 else:
                     optional['economy'] = re.findall("\d+\.\d+", data.text.encode('utf-8'))[0]
 
-        return {"amount": optional['economy'], "optional": optional}
+        #TODO : Do something with optional data
+        exchange = Exchange(name="remitly",amount=optional['economy'])
+
+        return exchange.to_json()
