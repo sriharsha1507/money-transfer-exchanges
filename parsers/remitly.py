@@ -2,15 +2,15 @@
 import re
 
 from model.Exchange import Exchange
+from parsers.helper.meta_data import MetaDataHelper
 from parsers.helper.scraper import Scraper
 
 
 class Remitly:
     def __init__(self):
-        pass
+        self.exchange = Exchange(name="Remitly", end_point="/remitly")
 
-    @staticmethod
-    def get_amount():
+    def get_amount(self):
         target_page = 'https://www.remitly.com/us/en/india'
         scraper = Scraper(target_page)
         # flsmo2ix is the class name which contains our required data for this project
@@ -24,7 +24,10 @@ class Remitly:
                 else:
                     optional['economy'] = re.findall("\d+\.\d+", data.text.encode('utf-8'))[0]
 
-        #TODO : Do something with optional data
-        exchange = Exchange(name="remitly",amount=optional['economy'])
+        # TODO : Do something with optional data
+        self.exchange.amount = optional['economy']
 
-        return exchange.to_json()
+        return self.exchange.to_json()
+
+    def meta_data(self):
+        return MetaDataHelper.get_meta_data(self.exchange)
